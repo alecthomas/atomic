@@ -64,7 +64,7 @@ type Int[T atomicint] interface {
 
 // Int32 atomic value.
 //
-// May be safely copied.
+// Copying creates an alias.
 type Int32 struct{ value *int32 }
 
 // NewInt32 creates a new atomic integer with an initial value.
@@ -80,7 +80,7 @@ func (i Int32) CompareAndSwap(old, new int32) (swapped bool) {
 
 // Uint32 atomic value.
 //
-// May be safely copied.
+// Copying creates an alias.
 type Uint32 struct{ value *uint32 }
 
 // NewUint32 creates a new atomic integer with an initial value.
@@ -96,7 +96,7 @@ func (i Uint32) CompareAndSwap(old, new uint32) (swapped bool) {
 
 // Int64 atomic value.
 //
-// May be safely copied.
+// Copying creates an alias.
 type Int64 struct{ value *int64 }
 
 // NewInt64 creates a new atomic integer with an initial value.
@@ -112,7 +112,7 @@ func (i Int64) CompareAndSwap(old, new int64) (swapped bool) {
 
 // Uint64 atomic value.
 //
-// May be safely copied.
+// Copying creates an alias.
 type Uint64 struct{ value *uint64 }
 
 // NewUint64 creates a new atomic integer with an initial value.
