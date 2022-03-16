@@ -1,8 +1,14 @@
+// Package atomic contains type-safe atomic types.
+//
+// The zero value for the numeric types cannot be used. Use New*. The
+// rationale for this behaviour is that copying an atomic integer is not
+// reliable. Copying can be prevented by embedding sync.Mutex, but that bloats
+// the type.
 package atomic
 
 import "sync/atomic"
 
-// Interface represents a value that can be atomically loaded or replaced.
+// Interface represents atomic operations on a value.
 type Interface[T any] interface {
 	// Load value atomically.
 	Load() T
@@ -64,11 +70,13 @@ type Int[T atomicint] interface {
 
 // Int32 atomic value.
 //
-// Copying creates an alias.
+// Copying creates an alias. The zero value is not usable, use NewInt32.
 type Int32 struct{ value *int32 }
 
 // NewInt32 creates a new atomic integer with an initial value.
 func NewInt32(value int32) Int32 { return Int32{value: &value} }
+
+var _ Int[int32] = &Int32{}
 
 func (i Int32) Add(delta int32) (new int32) { return atomic.AddInt32(i.value, delta) }
 func (i Int32) Load() (val int32)           { return atomic.LoadInt32(i.value) }
@@ -82,6 +90,8 @@ func (i Int32) CompareAndSwap(old, new int32) (swapped bool) {
 //
 // Copying creates an alias.
 type Uint32 struct{ value *uint32 }
+
+var _ Int[uint32] = Uint32{}
 
 // NewUint32 creates a new atomic integer with an initial value.
 func NewUint32(value uint32) Uint32 { return Uint32{value: &value} }
@@ -99,6 +109,8 @@ func (i Uint32) CompareAndSwap(old, new uint32) (swapped bool) {
 // Copying creates an alias.
 type Int64 struct{ value *int64 }
 
+var _ Int[int64] = Int64{}
+
 // NewInt64 creates a new atomic integer with an initial value.
 func NewInt64(value int64) Int64 { return Int64{value: &value} }
 
@@ -114,6 +126,8 @@ func (i Int64) CompareAndSwap(old, new int64) (swapped bool) {
 //
 // Copying creates an alias.
 type Uint64 struct{ value *uint64 }
+
+var _ Int[uint64] = Uint64{}
 
 // NewUint64 creates a new atomic integer with an initial value.
 func NewUint64(value uint64) Uint64 { return Uint64{value: &value} }

@@ -2,11 +2,11 @@ package atomic_test
 
 import (
 	"fmt"
+	stdlibatomic "sync/atomic"
 	"testing"
 
-	stdlibatomic "sync/atomic"
-
 	"github.com/alecthomas/assert/v2"
+
 	"github.com/alecthomas/atomic"
 )
 
