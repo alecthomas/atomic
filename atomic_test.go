@@ -10,9 +10,16 @@ import (
 	"github.com/alecthomas/atomic"
 )
 
-func TestAtomic(t *testing.T) {
+func TestValue(t *testing.T) {
 	v := atomic.New("hello")
 	assert.Equal(t, "hello", v.Load())
+	v.Store("world")
+	assert.Equal(t, "world", v.Load())
+}
+
+func TestValueZeroValue(t *testing.T) {
+	var v atomic.Value[string]
+	assert.Equal(t, "", v.Load())
 	v.Store("world")
 	assert.Equal(t, "world", v.Load())
 }

@@ -20,6 +20,8 @@ type Interface[T any] interface {
 	CompareAndSwap(old, new T) (swapped bool)
 }
 
+var _ Interface[bool] = &Value[bool]{}
+
 // Value wraps any generic value in atomic load and store operations.
 type Value[T any] struct {
 	value atomic.Value
@@ -32,7 +34,13 @@ func New[T any](seed T) *Value[T] {
 	return v
 }
 
-func (v *Value[T]) Load() T                                  { return v.value.Load().(T) }
+func (v *Value[T]) Load() (out T) {
+	value := v.value.Load()
+	if value == nil {
+		return out
+	}
+	return value.(T)
+}
 func (v *Value[T]) Store(value T)                            { v.value.Store(value) }
 func (v *Value[T]) Swap(new T) (old T)                       { return v.value.Swap(new).(T) }
 func (v *Value[T]) CompareAndSwap(old, new T) (swapped bool) { return v.value.CompareAndSwap(old, new) }
