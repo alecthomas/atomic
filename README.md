@@ -8,8 +8,8 @@ interfaces for use with integer and non-integer atomic values.
 The first interface is for any value:
 
 ```go
-// Value represents a value that can be atomically loaded or replaced.
-type Value[T any] interface {
+// Interface represents a value that can be atomically loaded or replaced.
+type Interface[T any] interface {
 	// Load value atomically.
 	Load() T
 	// Store value atomically.
