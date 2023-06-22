@@ -23,6 +23,8 @@ type Interface[T any] interface {
 var _ Interface[bool] = &Value[bool]{}
 
 // Value wraps any generic value in atomic load and store operations.
+//
+// The zero value should be initialised using [Value.Store] before use.
 type Value[T any] struct {
 	value atomic.Value
 }
@@ -34,10 +36,13 @@ func New[T any](seed T) *Value[T] {
 	return v
 }
 
+// Load value atomically.
+//
+// Will panic if the value is nil.
 func (v *Value[T]) Load() (out T) {
 	value := v.value.Load()
 	if value == nil {
-		return out
+		panic("nil value in atomic.Value")
 	}
 	return value.(T)
 }

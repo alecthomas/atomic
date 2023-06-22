@@ -19,9 +19,14 @@ func TestValue(t *testing.T) {
 
 func TestValueZeroValue(t *testing.T) {
 	var v atomic.Value[string]
-	assert.Equal(t, "", v.Load())
+	assert.Panics(t, func() { v.Load() })
 	v.Store("world")
 	assert.Equal(t, "world", v.Load())
+}
+
+func TestValueSwapZeroValue(t *testing.T) {
+	var v atomic.Value[string]
+	assert.Panics(t, func() { v.Swap("hello") })
 }
 
 func TestInt32(t *testing.T) {
